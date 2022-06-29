@@ -33,17 +33,6 @@ impl WalletDataSource for WalletData {
     }
 }
 
-impl WalletSign for WalletData {
-    fn sign_transaction_with_inputs(
-        &self,
-        unsigned_tx: &UnsignedTransaction,
-        _inputs: TxIoVec<ErgoBox>,
-        _data_inputs: Option<TxIoVec<ErgoBox>>,
-    ) -> Result<Transaction, NodeError> {
-        node_interface::sign_transaction(unsigned_tx)
-    }
-}
-
 impl SubmitTransaction for WalletData {
     fn submit_transaction(&self, tx: &Transaction) -> Result<String, NodeError> {
         node_interface::submit_transaction(tx)

@@ -5,7 +5,7 @@ use derive_more::From;
 use ergo_lib::{
     chain::{
         ergo_box::box_builder::{ErgoBoxCandidateBuilder, ErgoBoxCandidateBuilderError},
-        transaction::Transaction,
+        transaction::{unsigned::UnsignedTransaction, Transaction, TxIoVec},
     },
     ergotree_ir::{
         chain::{
@@ -50,11 +50,15 @@ impl SubmitTransaction for NodeInterface {
 impl WalletSign for NodeInterface {
     fn sign_transaction_with_inputs(
         &self,
-        unsigned_tx: &ergo_lib::chain::transaction::unsigned::UnsignedTransaction,
-        _inputs: ergo_lib::chain::transaction::TxIoVec<ErgoBox>,
-        _data_boxes: Option<ergo_lib::chain::transaction::TxIoVec<ErgoBox>>,
+        unsigned_tx: &UnsignedTransaction,
+        inputs: TxIoVec<ErgoBox>,
+        data_boxes: Option<TxIoVec<ErgoBox>>,
     ) -> Result<Transaction, NodeError> {
-        self.sign_transaction(unsigned_tx)
+        self.sign_transaction(
+            unsigned_tx,
+            Some(inputs.as_vec().clone()),
+            data_boxes.map(|v| v.as_vec().clone()),
+        )
     }
 }
 

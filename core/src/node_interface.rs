@@ -130,7 +130,7 @@ pub fn get_wallet_status() -> Result<WalletStatus> {
 
 /// Sign an `UnsignedTransaction`.
 pub fn sign_transaction(unsigned_tx: &UnsignedTransaction) -> Result<Transaction> {
-    new_node_interface().sign_transaction(unsigned_tx)
+    new_node_interface().sign_transaction(unsigned_tx, None, None)
 }
 
 /// Submit a `Transaction` to the mempool.
